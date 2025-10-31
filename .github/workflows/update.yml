@@ -12,22 +12,6 @@ on:
 
 jobs:
 
-  check-for-updates:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - run: deno task run
-
   check:
     needs: check-for-updates
     outputs:
@@ -37,6 +21,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+        
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: deno task run
 
       - name: Check file change condition
         id: skip_check

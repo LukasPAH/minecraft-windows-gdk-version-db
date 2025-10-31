@@ -1,0 +1,71 @@
+name: Update
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Check for updates every half hour between 15:00 UTC and 19:00 UTC on Tuesday through Thursday
+    - cron: '0,30 15-19 * * 2-4'
+    # Check for updates every hour between 17:00 UTC and 19:00 UTC on Monday and Friday
+    - cron: '0 17-19 * * 1,5'
+    # Check for updates at 19:00 UTC once every Saturday and Sunday
+    - cron: '0 19 * * 0,6'
+
+jobs:
+
+  check-for-updates:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: deno task run
+
+  check:
+    needs: check-for-updates
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check file change condition
+        id: skip_check
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep "historical_versions.json"; then
+              echo "should_skip=false" >> $GITHUB_OUTPUT
+            else
+              echo "should_skip=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "should_skip=false" >> $GITHUB_OUTPUT
+          fi
+  
+  commit-files:
+    needs: check
+    runs-on: ubuntu-latest
+    if: ${{ needs.check.outputs.should_skip != 'true' }}
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add version"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

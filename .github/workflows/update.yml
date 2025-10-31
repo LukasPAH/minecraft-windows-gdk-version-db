@@ -13,7 +13,6 @@ on:
 jobs:
 
   check:
-    needs: check-for-updates
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     runs-on: ubuntu-latest

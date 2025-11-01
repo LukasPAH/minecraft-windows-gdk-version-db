@@ -1,8 +1,12 @@
 {
     "tasks": {
-        "run": "deno run --allow-net --allow-read --allow-write main.ts"
+        "generateRefreshToken": "deno run --allow-net --allow-write generateRefreshToken.ts",
+        "getLatestVersion": "deno run --allow-net --allow-env --env-file --allow-write --allow-read getLatestVersion.ts"
     },
     "imports": {
-        "@std/assert": "jsr:@std/assert@1"
+        "@std/assert": "jsr:@std/assert@1",
+        "@types/readline-sync": "npm:@types/readline-sync@^1.4.8",
+        "@xboxreplay/xboxlive-auth": "npm:@xboxreplay/xboxlive-auth@^5.1.0",
+        "readline-sync": "npm:readline-sync@^1.4.10"
     }
 }

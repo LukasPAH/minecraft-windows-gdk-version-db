@@ -26,7 +26,7 @@ jobs:
         with:
           deno-version: v2.x
 
-      - run: deno task run
+      - run: deno task getLatestVersion
 
       - name: Check file change condition
         id: skip_check

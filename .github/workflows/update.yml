@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      repository-projects: write
+      actions: write
+      secrets: write
     steps:
       - uses: actions/checkout@v4
         with:

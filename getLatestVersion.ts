@@ -73,11 +73,11 @@ async function refreshTokens() {
 
     const authorizationHeader = `XBL3.0 x=${updateResponseJSON.DisplayClaims.xui[0].uhs};${updateResponseJSON.Token}`;
 
-    const releaseURL = await getVersions(RELEASE_ID, authorizationHeader);
-    const previewURL = await getVersions(PREVIEW_ID, authorizationHeader);
+    const releaseURLS = await getVersions(RELEASE_ID, authorizationHeader);
+    const previewURLS = await getVersions(PREVIEW_ID, authorizationHeader);
 
-    if (releaseURL !== undefined) await assessAndUpdateHistoricalVersions("Release", "releaseVersions", releaseURL);
-    if (previewURL !== undefined) await assessAndUpdateHistoricalVersions("Preview", "previewVersions", previewURL)
+    if (releaseURLS !== undefined) await assessAndUpdateHistoricalVersions("Release", "releaseVersions", releaseURLS);
+    if (previewURLS !== undefined) await assessAndUpdateHistoricalVersions("Preview", "previewVersions", previewURLS);
 }
 
 async function getVersions(releaseType: string, authorizationHeader: string) {
@@ -96,8 +96,14 @@ async function getVersions(releaseType: string, authorizationHeader: string) {
     for (const packageFile of versionsResponseJSON.PackageFiles) {
         if (!packageFile.FileName.endsWith(".msixvc")) continue;
 
-        const versionURL = packageFile.CdnRootPaths[0] + packageFile.RelativeUrl;
-        return versionURL;
+        const versionURLS: string[] = [];
+
+        for (let i = 0; i < packageFile.CdnRootPaths.length; i++) {
+            const versionURL = packageFile.CdnRootPaths[i] + packageFile.RelativeUrl;
+            versionURLS.push(versionURL);
+        }
+
+        return versionURLS;
     }
 }
 
@@ -108,9 +114,9 @@ function prettifyVersionNumbers(version: string): string {
     return majorVersion + "." + minorVersion;
 }
 
-async function assessAndUpdateHistoricalVersions(installType: InstallType, versions: Versions, url: string) {
+async function assessAndUpdateHistoricalVersions(installType: InstallType, versions: Versions, urls: string[]) {
     const versionNameRegex = /[^\/]*.msixvc$/;
-    const versionNameMatch = url.match(versionNameRegex);
+    const versionNameMatch = urls[0].match(versionNameRegex);
     if (versionNameMatch === null) return;
 
     const version = versionNameMatch[0].replace(".msixvc", "");
@@ -124,7 +130,7 @@ async function assessAndUpdateHistoricalVersions(installType: InstallType, versi
     }
 
     if (versionsLength === length) {
-        VERSIONS_DB[versions].push({ version: name, url: url });
+        VERSIONS_DB[versions].push({ version: name, urls: urls });
         await Deno.writeTextFile("./historical_versions.json", JSON.stringify(VERSIONS_DB, null, 4));
     }
 }

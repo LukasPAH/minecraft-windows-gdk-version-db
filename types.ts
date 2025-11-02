@@ -53,7 +53,7 @@ export interface IHistoricalVersions {
 
 interface IVersion {
     version: string;
-    url: string;
+    urls: string[];
 }
 
 export type InstallType = "Release" | "Preview";

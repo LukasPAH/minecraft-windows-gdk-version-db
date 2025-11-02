@@ -53,8 +53,8 @@ jobs:
               repo: context.repo.repo,
             });
 
-            const envFilePath = path.join(__dirname, '.env');
-            const newSecretValue = fs.readFileSync(process.cwd(), 'utf8').replace('REFRESH_TOKEN=', '');
+            const envFilePath = path.join(process.cwd(), '.env');
+            const newSecretValue = fs.readFileSync(envFilePath, 'utf8').replace('REFRESH_TOKEN=', '');
 
             const message = Buffer.from(newSecretValue);
             const key = Buffer.from(publicKey.data.key, 'base64');

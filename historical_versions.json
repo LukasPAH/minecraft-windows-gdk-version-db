@@ -39,6 +39,9 @@
         }
     ],
     "releaseVersions": [
-
+        {
+            "version": "Release 1.21.120.04",
+            "url": "http://assets1.xboxlive.com/1/7d219e7c-a46e-4afc-8176-cec808fc1e1b/7792d9ce-355a-493c-afbd-768f4a77c3b0/1.21.12004.0.0ed99274-787a-4d02-8344-7c6bd1ef77c8/MICROSOFT.MINECRAFTUWP_1.21.12004.0_x64__8wekyb3d8bbwe.msixvc"
+        }
     ]
 }

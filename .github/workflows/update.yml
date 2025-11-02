@@ -16,10 +16,6 @@ jobs:
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      actions: write
-      secrets: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,7 +42,7 @@ jobs:
 
       - uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.VERSION_DB_TOKEN }}
           script: |
             const sodium = require('sodium-native');
             const fs = require('fs');

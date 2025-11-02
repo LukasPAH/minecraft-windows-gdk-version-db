@@ -45,7 +45,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const sodium = require('sodium-native');
-            const fs = requre('fs');
+            const fs = require('fs');
             const path = require('path');
 
             const publicKey = await github.rest.actions.getRepoPublicKey({

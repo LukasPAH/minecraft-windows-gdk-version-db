@@ -30,6 +30,37 @@ jobs:
         env:
           REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
 
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const sodium = require('sodium-native');
+            const fs = requre('fs');
+            const path = require('path');
+
+            const publicKey = await github.rest.actions.getRepoPublicKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const envFilePath = path.join(__dirname, '.env');
+            const newSecretValue = fs.readFileSync(envFilePath, 'utf8').replace('REFRESH_TOKEN=', '');
+
+            const message = Buffer.from(newSecretValue);
+            const key = Buffer.from(publicKey.data.key, 'base64');
+            const sealed = Buffer.alloc(message.byteLength + sodium.crypto_box_SEALBYTES);
+            sodium.crypto_box_seal(sealed, message, key);
+
+            await github.rest.actions.createOrUpdateRepoSecret({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              secret_name: 'REFRESH_TOKEN',
+              encrypted_value: sealed.toString('base64'),
+              key_id: publicKey.data.key_id,
+            });
+
+      - run: deno task deleteEnvFile
+
       - name: Check file change condition
         id: skip_check
         run: |
@@ -78,7 +109,7 @@ jobs:
           git commit -a -m "Add version"
 
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@1.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}

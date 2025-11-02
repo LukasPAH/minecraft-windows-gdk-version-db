@@ -1,0 +1,1 @@
+await Deno.remove(".env")

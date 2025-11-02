@@ -1,0 +1,9 @@
+{
+    "dependencies": {
+        "@types/readline-sync": "^1.4.8",
+        "@xboxreplay/xboxlive-auth": "^5.1.0",
+        "path": "^0.12.7",
+        "readline-sync": "^1.4.10",
+        "sodium-native": "^5.0.9"
+    }
+}

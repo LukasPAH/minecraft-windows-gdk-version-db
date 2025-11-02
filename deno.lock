@@ -5,7 +5,9 @@
     "jsr:@std/internal@^1.0.12": "1.0.12",
     "npm:@types/readline-sync@^1.4.8": "1.4.8",
     "npm:@xboxreplay/xboxlive-auth@^5.1.0": "5.1.0",
-    "npm:readline-sync@^1.4.10": "1.4.10"
+    "npm:path@~0.12.7": "0.12.7",
+    "npm:readline-sync@^1.4.10": "1.4.10",
+    "npm:sodium-native@^5.0.9": "5.0.9"
   },
   "jsr": {
     "@std/assert@1.0.15": {
@@ -25,8 +27,83 @@
     "@xboxreplay/xboxlive-auth@5.1.0": {
       "integrity": "sha512-UngHHsehZbiTjyyNmo8HvdoUDKMID1U9uVfrpFWUK/2UxPuVTKy5n+CzZQ3S488sW5vOhgh0lHqqynT8ouwgvw=="
     },
+    "bare-addon-resolve@1.9.5_bare-url@2.3.2": {
+      "integrity": "sha512-XdqrG73zLK9LDfblOJwoAxmJ+7YdfRW4ex46+f4L+wPhk7H7LDrRMAbBw8s8jkxeEFpUenyB7QHnv0ErAWd3Yg==",
+      "dependencies": [
+        "bare-module-resolve",
+        "bare-semver",
+        "bare-url"
+      ],
+      "optionalPeers": [
+        "bare-url"
+      ]
+    },
+    "bare-module-resolve@1.11.2_bare-url@2.3.2": {
+      "integrity": "sha512-HIBu9WacMejg3Dz4X1v6lJjp7ECnwpujvuLub+8I7JJLRwJaGxWMzGYvieOoS9R1n5iRByvTmLtIdPbwjfRgiQ==",
+      "dependencies": [
+        "bare-semver",
+        "bare-url"
+      ],
+      "optionalPeers": [
+        "bare-url"
+      ]
+    },
+    "bare-os@3.6.2": {
+      "integrity": "sha512-T+V1+1srU2qYNBmJCXZkUY5vQ0B4FSlL3QDROnKQYOqeiQR8UbjNHlPa+TIbM4cuidiN9GaTaOZgSEgsvPbh5A=="
+    },
+    "bare-path@3.0.0": {
+      "integrity": "sha512-tyfW2cQcB5NN8Saijrhqn0Zh7AnFNsnczRcuWODH0eYAXBsJ5gVxAUuNr7tsHSC6IZ77cA0SitzT+s47kot8Mw==",
+      "dependencies": [
+        "bare-os"
+      ]
+    },
+    "bare-semver@1.0.2": {
+      "integrity": "sha512-ESVaN2nzWhcI5tf3Zzcq9aqCZ676VWzqw07eEZ0qxAcEOAFYBa0pWq8sK34OQeHLY3JsfKXZS9mDyzyxGjeLzA=="
+    },
+    "bare-url@2.3.2": {
+      "integrity": "sha512-ZMq4gd9ngV5aTMa5p9+UfY0b3skwhHELaDkhEHetMdX0LRkW9kzaym4oo/Eh+Ghm0CCDuMTsRIGM/ytUc1ZYmw==",
+      "dependencies": [
+        "bare-path"
+      ]
+    },
+    "inherits@2.0.3": {
+      "integrity": "sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw=="
+    },
+    "path@0.12.7": {
+      "integrity": "sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==",
+      "dependencies": [
+        "process",
+        "util"
+      ]
+    },
+    "process@0.11.10": {
+      "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A=="
+    },
     "readline-sync@1.4.10": {
       "integrity": "sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw=="
+    },
+    "require-addon@1.1.0_bare-url@2.3.2": {
+      "integrity": "sha512-KbXAD5q2+v1GJnkzd8zzbOxchTkStSyJZ9QwoCq3QwEXAaIlG3wDYRZGzVD357jmwaGY7hr5VaoEAL0BkF0Kvg==",
+      "dependencies": [
+        "bare-addon-resolve",
+        "bare-url"
+      ]
+    },
+    "sodium-native@5.0.9": {
+      "integrity": "sha512-6fpu3d6zdrRpLhuV3CDIBO5g90KkgaeR+c3xvDDz0ZnDkAlqbbPhFW7zhMJfsskfZ9SuC3SvBbqvxcECkXRyKw==",
+      "dependencies": [
+        "require-addon",
+        "which-runtime"
+      ]
+    },
+    "util@0.10.4": {
+      "integrity": "sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==",
+      "dependencies": [
+        "inherits"
+      ]
+    },
+    "which-runtime@1.3.2": {
+      "integrity": "sha512-5kwCfWml7+b2NO7KrLMhYihjRx0teKkd3yGp1Xk5Vaf2JGdSh+rgVhEALAD9c/59dP+YwJHXoEO7e8QPy7gOkw=="
     }
   },
   "workspace": {
@@ -35,6 +112,15 @@
       "npm:@types/readline-sync@^1.4.8",
       "npm:@xboxreplay/xboxlive-auth@^5.1.0",
       "npm:readline-sync@^1.4.10"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@types/readline-sync@^1.4.8",
+        "npm:@xboxreplay/xboxlive-auth@^5.1.0",
+        "npm:path@~0.12.7",
+        "npm:readline-sync@^1.4.10",
+        "npm:sodium-native@^5.0.9"
+      ]
+    }
   }
 }

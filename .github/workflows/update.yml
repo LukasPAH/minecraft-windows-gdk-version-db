@@ -16,6 +16,9 @@ jobs:
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      repository-projects: write
     steps:
       - uses: actions/checkout@v4
         with:

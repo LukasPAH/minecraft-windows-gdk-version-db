@@ -108,10 +108,18 @@ async function getVersions(releaseType: string, authorizationHeader: string) {
 }
 
 function prettifyVersionNumbers(version: string): string {
+    const unmodifiedVersion = version;
     version = version.toLowerCase().replace("microsoft.minecraftuwp_", "").replace("microsoft.minecraftwindowsbeta_", "").replace(".0_x64__8wekyb3d8bbwe", "");
     const majorVersion = version.slice(0, -2);
     const minorVersion = version.slice(-2);
-    return majorVersion + "." + minorVersion;
+    let versionString = majorVersion + "." + minorVersion;
+    if (versionString.includes("..")) {
+        const rawVersion = unmodifiedVersion.toLowerCase().replace("microsoft.minecraftuwp_", "").replace("microsoft.minecraftwindowsbeta_", "").replace("_x64__8wekyb3d8bbwe", "");
+        const patchNumber = rawVersion.slice(-1);
+        versionString = versionString.replace("1.", "");
+        versionString = versionString.replace("..", `.${patchNumber}.`);
+    }
+    return versionString;
 }
 
 async function assessAndUpdateHistoricalVersions(installType: InstallType, versions: Versions, urls: string[]) {
@@ -135,4 +143,6 @@ async function assessAndUpdateHistoricalVersions(installType: InstallType, versi
     }
 }
 
-await refreshTokens();
+//await refreshTokens();
+
+console.log(prettifyVersionNumbers("Microsoft.MinecraftWindowsBeta_1.26.24.0_x64__8wekyb3d8bbwe"));

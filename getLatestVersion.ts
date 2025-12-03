@@ -143,6 +143,4 @@ async function assessAndUpdateHistoricalVersions(installType: InstallType, versi
     }
 }
 
-//await refreshTokens();
-
-console.log(prettifyVersionNumbers("Microsoft.MinecraftWindowsBeta_1.26.24.0_x64__8wekyb3d8bbwe"));
+await refreshTokens();

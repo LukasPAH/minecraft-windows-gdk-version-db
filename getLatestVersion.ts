@@ -6,6 +6,8 @@ const SCOPE = "service::user.auth.xboxlive.com::MBI_SSL";
 const RELEASE_ID = "7792d9ce-355a-493c-afbd-768f4a77c3b0";
 const PREVIEW_ID = "98bd2335-9b01-4e4c-bd05-ccc01614078b";
 const VERSIONS_DB = JSON.parse(await Deno.readTextFile("./historical_versions.json")) as IHistoricalVersions;
+const VERSION_REGEX = /(\d+)\.(\d+)\.(\d+)$/;
+const CAL_VER_START_NUMBER = 26;
 
 async function refreshTokens() {
     const REFRESH_TOKEN = Deno.env.get("REFRESH_TOKEN");
@@ -107,28 +109,52 @@ async function getVersions(releaseType: string, authorizationHeader: string) {
     }
 }
 
-function prettifyVersionNumbers(version: string): string {
-    const unmodifiedVersion = version;
+function prettifyVersionNumbers(version: string): string | undefined {
     version = version.toLowerCase().replace("microsoft.minecraftuwp_", "").replace("microsoft.minecraftwindowsbeta_", "").replace(".0_x64__8wekyb3d8bbwe", "");
-    const majorVersion = version.slice(0, -2);
-    const minorVersion = version.slice(-2);
-    let versionString = majorVersion + "." + minorVersion;
-    if (versionString.includes("..")) {
-        const rawVersion = unmodifiedVersion.toLowerCase().replace("microsoft.minecraftuwp_", "").replace("microsoft.minecraftwindowsbeta_", "").replace("_x64__8wekyb3d8bbwe", "");
-        const patchNumber = rawVersion.slice(-1);
-        versionString = versionString.replace("1.", "");
-        versionString = versionString.replace("..", `.${patchNumber}.`);
+
+    const versionMatch = version.match(VERSION_REGEX);
+
+    if (versionMatch === null) {
+        return;
     }
+
+    const majorVersion = versionMatch[1];
+    if (majorVersion === undefined) {
+        return;
+    }
+
+    const minorVersion = versionMatch[2];
+    if (minorVersion === undefined) {
+        return;
+    }
+
+    const patchVersionUnprocessed = versionMatch[3];
+    if (patchVersionUnprocessed === undefined) {
+        return;
+    }
+
+    const patchVersion = (parseInt(patchVersionUnprocessed) / 100).toFixed(2);
+
+    let versionString = `${majorVersion}.${minorVersion}.${patchVersion}`;
+    if (parseInt(minorVersion) >= CAL_VER_START_NUMBER) {
+        versionString = `${minorVersion}.${patchVersion}`;
+    }
+
     return versionString;
 }
 
 async function assessAndUpdateHistoricalVersions(installType: InstallType, versions: Versions, urls: string[]) {
     const versionNameRegex = /[^\/]*.msixvc$/;
     const versionNameMatch = urls[0].match(versionNameRegex);
-    if (versionNameMatch === null) return;
+    if (versionNameMatch === null) {
+        return;
+    }
 
     const version = versionNameMatch[0].replace(".msixvc", "");
     const versionNumber = prettifyVersionNumbers(version);
+    if (versionNumber === undefined) {
+        return;
+    }
     const name = `${installType} ${versionNumber}`;
 
     const versionsLength = VERSIONS_DB[versions].length;

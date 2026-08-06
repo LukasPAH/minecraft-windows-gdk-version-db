@@ -1,5 +1,5 @@
 {
-    "file_version": 0,
+    "file_version": 1,
     "previewVersions": [
         {
             "version": "Preview 1.21.120.21",
@@ -479,5 +479,7 @@
                 "http://assets2.xboxlive.com/4/126a2a46-2f8e-407b-80f2-8560a63ce023/7792d9ce-355a-493c-afbd-768f4a77c3b0/1.26.4005.0.4c2b83a6-6147-4006-aa1b-1f494f17e026/Microsoft.MinecraftUWP_1.26.4005.0_x64__8wekyb3d8bbwe.msixvc"
             ]
         }
-    ]
+    ],
+    "release": "26.40.05",
+    "preview": "26.50.24"
 }

@@ -155,6 +155,12 @@ async function assessAndUpdateHistoricalVersions(installType: InstallType, versi
     if (versionNumber === undefined) {
         return;
     }
+    if (versions === "previewVersions") {
+        VERSIONS_DB.preview = versionNumber;
+    }
+    if (versions === "releaseVersions") {
+        VERSIONS_DB.release = versionNumber;
+    }
     const name = `${installType} ${versionNumber}`;
 
     const versionsLength = VERSIONS_DB[versions].length;

@@ -47,6 +47,8 @@ interface IResponseData {
 
 export interface IHistoricalVersions {
     file_version: 0;
+    preview: string;
+    release: string;
     previewVersions: IVersion[];
     releaseVersions: IVersion[];
 }
